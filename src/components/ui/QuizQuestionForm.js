@@ -20,7 +20,6 @@ const QuizQuestionForm = () => {
         {['A', 'B', 'C', 'D'].map((item) => {
           return (
             <View style={styles.optionCont}>
-              {/* <Text>{item})</Text> */}
               <TextInput
                 placeholder={`Option ${item}`}
                 value={name}
