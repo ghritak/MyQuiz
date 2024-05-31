@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Colors } from '../../constants/Colors';
 
-const Button = (props) => {
+const FormButton = (props) => {
   return (
     <TouchableOpacity style={styles.button} {...props}>
       {props.children}
@@ -11,7 +12,7 @@ const Button = (props) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#7980f5',
+    backgroundColor: Colors.primary,
     marginVertical: 10,
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -23,4 +24,4 @@ const styles = StyleSheet.create({
   buttonText: { color: 'white', fontWeight: '500' },
 });
 
-export default Button;
+export default FormButton;

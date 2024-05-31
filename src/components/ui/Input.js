@@ -1,4 +1,5 @@
 import { StyleSheet, TextInput, View } from 'react-native';
+import { Colors } from '../../constants/Colors';
 
 const Input = (props) => {
   return (
@@ -12,7 +13,7 @@ const Input = (props) => {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    backgroundColor: '#e3e1f9',
+    backgroundColor: Colors.secondary,
     marginVertical: 10,
     paddingVertical: 12,
     paddingHorizontal: 16,

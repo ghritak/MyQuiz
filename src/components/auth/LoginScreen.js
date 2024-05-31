@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Input from '../ui/Input';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../firebaseConfig';
+import { Colors } from '../../constants/Colors';
+import FormButton from '../ui/FormButton';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -86,9 +81,9 @@ const LoginScreen = () => {
             </TouchableOpacity>
           }
         />
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        <FormButton onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
+        </FormButton>
         <View style={styles.signupCont}>
           <Text>Don't have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('signup')}>
@@ -110,19 +105,9 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   heading: { fontSize: 20, fontWeight: '700', marginBottom: 10 },
-  button: {
-    backgroundColor: '#7980f5',
-    marginVertical: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 30,
-  },
   buttonText: { color: 'white', fontWeight: '500' },
   signupCont: { flexDirection: 'row', alignItems: 'center' },
-  signupButton: { color: '#7980f5', fontWeight: '600' },
+  signupButton: { color: Colors.primary, fontWeight: '600' },
 });
 
 export default LoginScreen;
