@@ -13,22 +13,20 @@ export default function RadioButton({ data, onSelect }) {
       {data.map((item, index) => {
         return (
           <View style={styles.container} key={index}>
-            <Text style={styles.option}> {item.value}</Text>
+            <Text style={styles.option}> {item}</Text>
             <Pressable
               style={[
                 styles.radioButton,
-                item.value === userOption
+                item === userOption
                   ? { borderColor: Colors.primary }
                   : { borderColor: 'gray' },
               ]}
-              onPress={() => selectHandler(item.value)}
+              onPress={() => selectHandler(item)}
             >
               <View
                 style={[
                   styles.innerCircle,
-                  item.value === userOption
-                    ? styles.selected
-                    : styles.unselected,
+                  item === userOption ? styles.selected : styles.unselected,
                 ]}
               />
             </Pressable>

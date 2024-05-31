@@ -4,7 +4,11 @@ import { Colors } from '../../constants/Colors';
 
 const FormButton = (props) => {
   return (
-    <TouchableOpacity style={styles.button} {...props}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      {...props}
+      style={{ ...styles.button, ...props.style }}
+    >
       {props.children}
     </TouchableOpacity>
   );

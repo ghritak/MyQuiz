@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 import RadioButton from './RadioButton';
 
-const options = [
-  { value: 'A' },
-  { value: 'B' },
-  { value: 'C' },
-  { value: 'D' },
-];
+const options = ['A', 'B', 'C', 'D'];
 
 const QuizQuestionForm = ({ index, handleChangeItem }) => {
   const [formData, setFormData] = useState({

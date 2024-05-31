@@ -132,7 +132,6 @@ const styles = StyleSheet.create({
   slogan: { marginTop: 4 },
   container: {
     flex: 1,
-    marginTop: 10,
   },
   form: { marginTop: 14 },
   input: {
