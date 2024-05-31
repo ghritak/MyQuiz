@@ -10,9 +10,9 @@ export default function RadioButton({ data, onSelect }) {
   };
   return (
     <View style={styles.container}>
-      {data.map((item) => {
+      {data.map((item, index) => {
         return (
-          <>
+          <View style={styles.container} key={index}>
             <Text style={styles.option}> {item.value}</Text>
             <Pressable
               style={[
@@ -32,7 +32,7 @@ export default function RadioButton({ data, onSelect }) {
                 ]}
               />
             </Pressable>
-          </>
+          </View>
         );
       })}
     </View>
@@ -41,6 +41,7 @@ export default function RadioButton({ data, onSelect }) {
 
 const styles = StyleSheet.create({
   container: { flexDirection: 'row', alignItems: 'center' },
+
   option: {
     color: 'black',
   },

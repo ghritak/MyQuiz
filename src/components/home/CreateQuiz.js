@@ -15,6 +15,9 @@ import RadioButton from '../ui/RadioButton';
 import FormButton from '../ui/FormButton';
 import QuizQuestionForm from '../ui/QuizQuestionForm';
 import AboutQuiz from './quiz/AboutQuiz';
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '../../../firebaseConfig';
+import { useNavigation } from '@react-navigation/native';
 
 const questionObject = {
   question: '',
@@ -26,6 +29,8 @@ const questionObject = {
 };
 
 const CreateQuizScreen = () => {
+  const navigation = useNavigation();
+  const { currentUser } = auth;
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -34,12 +39,26 @@ const CreateQuizScreen = () => {
     negativeMark: '1',
     timeLimit: '',
   });
-
+  const [isLoading, setLoading] = useState(false);
   const [questions, setQuestions] = useState([questionObject]);
 
-  const handleCreate = () => {
-    console.log(formData);
-    console.log(questions);
+  const handleCreate = async () => {
+    setLoading(true);
+    try {
+      const submitData = {
+        ...formData,
+        user_id: currentUser?.uid,
+        questions,
+      };
+      console.log(submitData);
+      const collectionRef = collection(db, 'quizes');
+      await addDoc(collectionRef, submitData);
+      setLoading(false);
+      navigation.goBack();
+    } catch (error) {
+      console.log('Could not create group', error);
+      setLoading(false);
+    }
   };
 
   const handleChangeItem = (item, index) => {
