@@ -4,10 +4,13 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../../firebaseConfig';
 import UpperBar from '../ui/UpperBar';
 import IconButton from '../ui/IconButton';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { Colors } from '../../constants/Colors';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+
   const handleLogout = () => {
     signOut(auth);
   };
@@ -21,10 +24,13 @@ const HomeScreen = () => {
             <Text style={styles.heading}>
               Hi, <Text style={styles.name}>Ghritak</Text>
             </Text>
-            <Text style={styles.slogan}>Create your own quize</Text>
+            <Text style={styles.slogan}>Create your own quiz</Text>
           </View>
-          <IconButton onPress={handleLogout}>
+          {/* <IconButton onPress={handleLogout}>
             <MaterialIcons name='logout' size={20} color={'white'} />
+          </IconButton> */}
+          <IconButton onPress={() => navigation.navigate('createquiz')}>
+            <MaterialCommunityIcons name='plus' size={20} color={'white'} />
           </IconButton>
         </View>
       </View>
