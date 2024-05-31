@@ -1,4 +1,5 @@
 import {
+  FlatList,
   StyleSheet,
   Text,
   TextInput,
@@ -13,6 +14,16 @@ import Header from '../ui/Header';
 import RadioButton from '../ui/RadioButton';
 import FormButton from '../ui/FormButton';
 import QuizQuestionForm from '../ui/QuizQuestionForm';
+import AboutQuiz from './quiz/AboutQuiz';
+
+const questionObject = {
+  question: '',
+  optionA: '',
+  optionB: '',
+  optionC: '',
+  optionD: '',
+  answer: '',
+};
 
 const CreateQuizScreen = () => {
   const [formData, setFormData] = useState({
@@ -23,10 +34,18 @@ const CreateQuizScreen = () => {
     negativeMark: '1',
     timeLimit: '',
   });
-  const data = [{ value: 'Yes' }, { value: 'No' }];
+
+  const [questions, setQuestions] = useState([questionObject]);
 
   const handleCreate = () => {
     console.log(formData);
+    console.log(questions);
+  };
+
+  const handleChangeItem = (item, index) => {
+    const newQuestions = questions;
+    newQuestions[index] = item;
+    setQuestions(newQuestions);
   };
 
   return (
@@ -34,69 +53,47 @@ const CreateQuizScreen = () => {
       <UpperBar />
       <View style={styles.container}>
         <Header title='Create Quiz' />
-        <View style={styles.form}>
-          <Text>Quiz Name</Text>
-          <TextInput
-            placeholder='Name of the quiz'
-            value={formData.name}
-            onChangeText={(text) =>
-              setFormData((prev) => ({ ...prev, name: text }))
-            }
-            style={styles.input}
-          />
-          <Text>Description</Text>
-          <TextInput
-            value={formData.description}
-            placeholder='About the quiz'
-            multiline={true}
-            onChangeText={(text) =>
-              setFormData((prev) => ({ ...prev, description: text }))
-            }
-            style={styles.input}
-          />
-          <Text>Mark for each question</Text>
-          <TextInput
-            value={formData.markForOne}
-            onChangeText={(text) =>
-              setFormData((prev) => ({ ...prev, markForOne: text }))
-            }
-            keyboardType='numeric'
-            style={styles.input}
-          />
-          <View style={styles.negative}>
-            <Text>Is negative marking present?</Text>
-            <View style={styles.radio}>
-              <RadioButton
-                data={data}
-                onSelect={(value) =>
-                  setFormData((prev) => ({ ...prev, isNegative: value }))
-                }
-              />
-            </View>
-          </View>
-          {formData.isNegative === 'Yes' && (
-            <>
-              <Text>How much deduction for one wrong question.</Text>
-              <TextInput
-                value={formData.negativeMark}
-                onChangeText={(text) =>
-                  setFormData((prev) => ({ ...prev, negativeMark: text }))
-                }
-                keyboardType='numeric'
-                style={styles.input}
-              />
-            </>
-          )}
-        </View>
+        <FlatList
+          data={[0]}
+          contentContainerStyle={{
+            paddingHorizontal: 14,
+            paddingBottom: 20,
+          }}
+          renderItem={() => {
+            return (
+              <>
+                <AboutQuiz formData={formData} setFormData={setFormData} />
+                <FlatList
+                  data={questions}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <QuizQuestionForm
+                        index={index}
+                        item={item}
+                        handleChangeItem={handleChangeItem}
+                      />
+                    );
+                  }}
+                />
 
-        <QuizQuestionForm />
-
-        <TouchableOpacity activeOpacity={0.7} style={styles.addQuestionButton}>
-          <Text style={styles.addQuestion}>Add Question</Text>
-        </TouchableOpacity>
-        <FormButton onPress={handleCreate}>
-          <Text style={{ color: '#fff', fontWeight: '500' }}>Create</Text>
-        </FormButton>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    setQuestions((prev) => [...prev, questionObject]);
+                  }}
+                  style={styles.addQuestionButton}
+                >
+                  <Text style={styles.addQuestion}>Add Question</Text>
+                </TouchableOpacity>
+                <FormButton onPress={handleCreate}>
+                  <Text style={{ color: '#fff', fontWeight: '500' }}>
+                    Create
+                  </Text>
+                </FormButton>
+              </>
+            );
+          }}
+        />
       </View>
     </>
   );
@@ -115,7 +112,8 @@ const styles = StyleSheet.create({
   name: { color: Colors.primary },
   slogan: { marginTop: 4 },
   container: {
-    margin: 10,
+    flex: 1,
+    marginTop: 10,
   },
   form: { marginTop: 14 },
   input: {

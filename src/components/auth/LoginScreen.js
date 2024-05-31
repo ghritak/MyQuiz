@@ -31,8 +31,6 @@ const LoginScreen = () => {
         formData.password
       );
       const { user } = userCredential;
-      console.log(user);
-
       console.log('User logged in successfully!');
     } catch (error) {
       setActivity((prev) => ({

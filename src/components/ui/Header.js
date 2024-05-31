@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  backButton: { padding: 6 },
+  backButton: { padding: 6, marginLeft: 10 },
   heading: {
     fontSize: 20,
     fontWeight: '600',
