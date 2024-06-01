@@ -6,6 +6,7 @@ const FinalAnswerList = ({ data, answer }) => {
     <View style={styles.container}>
       <FlatList
         data={data.questions}
+        contentContainerStyle={{ paddingHorizontal: 14, paddingBottom: 10 }}
         renderItem={({ item, index }) => {
           return <FinalAnswerCard item={item} index={index} answer={answer} />;
         }}
@@ -17,7 +18,6 @@ const FinalAnswerList = ({ data, answer }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 14,
     marginTop: 10,
   },
   header: { fontSize: 16, fontWeight: '600', marginBottom: 4 },

@@ -3,7 +3,7 @@ import FormButton from '../ui/FormButton';
 import { convertToTime } from '../../utils';
 import { style } from '../../constants/styles';
 
-const Introcomponent = ({ data, setState }) => {
+const Introcomponent = ({ data, setState, setAnswer }) => {
   return (
     <View style={styles.container}>
       <View style={styles.items}>
@@ -26,7 +26,13 @@ const Introcomponent = ({ data, setState }) => {
               : 'N/A'}
           </Text>
         </View>
-        <FormButton onPress={() => setState(0)} style={{ width: 140 }}>
+        <FormButton
+          onPress={() => {
+            setState(0);
+            setAnswer({ 0: 'not attempted' });
+          }}
+          style={{ width: 140 }}
+        >
           <Text style={style.buttonTextWhite}>Start</Text>
         </FormButton>
       </View>

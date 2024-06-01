@@ -5,7 +5,7 @@ import FormButton from '../ui/FormButton';
 import { style } from '../../constants/styles';
 import { convertToTime } from '../../utils';
 import Introcomponent from './IntroComponent';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import QuestionComponent from './QuestionComponent';
 import FinalAnswerList from './FinalAnswerList';
 import FinalScoreList from './FinalScoreList';
@@ -18,15 +18,9 @@ const MainPlayScreen = ({ route }) => {
   const handlePageIncrement = () => {
     if (state === data.questions.length - 1) {
       setState('quiz finished');
-      console.log(answer);
     } else {
       setState((prev) => prev + 1);
-    }
-    if (answer.length <= state) {
-      setAnswer((prev) => [...prev, 'not attempted']);
-    }
-    if (state === 'quiz finished' && answer.length !== data.questions.length) {
-      setAnswer((prev) => [...prev, 'not attempted']);
+      setAnswer((prev) => ({ ...prev, [state + 1]: 'not attempted' }));
     }
   };
 
@@ -35,7 +29,7 @@ const MainPlayScreen = ({ route }) => {
       <UpperBar />
       <Header title={''} type={'close'} />
       {state === 'yet to start' && (
-        <Introcomponent data={data} setState={setState} />
+        <Introcomponent data={data} setState={setState} setAnswer={setAnswer} />
       )}
       {typeof state === 'number' && (
         <>
@@ -58,6 +52,9 @@ const MainPlayScreen = ({ route }) => {
 
       {state === 'quiz finished' && (
         <FinalScoreList data={data} setState={setState} answer={answer} />
+      )}
+      {state === 'view answers' && (
+        <FinalAnswerList data={data} answer={answer} />
       )}
     </>
   );

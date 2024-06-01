@@ -17,7 +17,7 @@ const QuestionComponent = ({
   ];
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} key={state}>
       <Text style={styles.question}>
         {state + 1}. {question?.question}
       </Text>
@@ -25,7 +25,7 @@ const QuestionComponent = ({
         <QuestionRadioButton
           data={data}
           onSelect={(value) => {
-            setAnswer((prev) => [...prev, value]);
+            setAnswer((prev) => ({ ...prev, [state]: value }));
           }}
         />
       </View>

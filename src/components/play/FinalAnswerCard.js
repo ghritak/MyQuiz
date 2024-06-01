@@ -1,8 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import QuestionRadioButton from '../ui/QuestionRadioButton';
 import { Colors } from '../../constants/Colors';
 import { getOptionIndex } from '../../utils';
-import { Feather, FontAwesome6, Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 
 const FinalAnswerCard = ({ item, index, answer }) => {
   const data = [item.optionA, item.optionB, item.optionC, item.optionD];
@@ -17,62 +16,35 @@ const FinalAnswerCard = ({ item, index, answer }) => {
           data={data}
           renderItem={({ item: each, index: id }) => {
             return (
-              <View
-                style={[
-                  styles.container,
-                  getOptionIndex(id) === item.answer
-                    ? { borderColor: 'green', borderWidth: 1 }
-                    : {},
-                  getOptionIndex(id) === answer[index] &&
-                  item.answer !== answer[index]
-                    ? { borderWidth: 1, borderColor: 'red' }
-                    : {},
-                ]}
-                key={index}
-              >
-                <View
-                  style={[
-                    styles.radioButton,
-                    getOptionIndex(id) === item.answer
-                      ? { borderColor: 'green' }
-                      : {},
-                  ]}
-                >
+              <View style={[styles.container]} key={index}>
+                <View style={[styles.radioButton]}>
                   <View
                     style={[
                       styles.innerCircle,
                       getOptionIndex(id) === answer[index]
                         ? { backgroundColor: 'gray' }
                         : {},
-                      getOptionIndex(id) === item.answer
-                        ? { backgroundColor: 'green' }
-                        : {},
                     ]}
                   />
                 </View>
                 <Text style={styles.option}> {each}</Text>
-                {getOptionIndex(id) === item.answer && (
-                  <Feather
-                    name='check-square'
-                    size={20}
-                    color={'green'}
-                    style={{ marginLeft: 'auto', marginRight: 4 }}
-                  />
-                )}
-                {getOptionIndex(id) === answer[index] &&
-                  item.answer !== answer[index] && (
-                    <Ionicons
-                      name='close'
-                      size={20}
-                      color={'red'}
-                      style={{ marginLeft: 'auto', marginRight: 4 }}
-                    />
-                  )}
               </View>
             );
           }}
         />
-        <Text>{answer[index]}</Text>
+        <View style={styles.belowText}>
+          <Text>
+            <Text style={{ color: 'green' }}>Correct Answer:</Text>{' '}
+            {item.answer}
+          </Text>
+          {item.answer === answer[index] ? (
+            <Text style={{ color: Colors.success }}>Correct</Text>
+          ) : answer[index] === 'not attempted' ? (
+            <Text>Not attempted</Text>
+          ) : (
+            <Text style={{ color: Colors.error }}>Incorrect</Text>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -93,7 +65,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 5,
     borderRadius: 6,
-    // borderWidth: 1,
   },
   option: {
     color: 'black',
@@ -117,6 +88,7 @@ const styles = StyleSheet.create({
     width: 12,
     borderRadius: 20,
   },
+  belowText: { flexDirection: 'row', justifyContent: 'space-between' },
 });
 
 export default FinalAnswerCard;
