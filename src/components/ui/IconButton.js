@@ -5,7 +5,11 @@ import { Colors } from '../../constants/Colors';
 const IconButton = (props) => {
   return (
     <View>
-      <TouchableOpacity activeOpacity={0.7} style={styles.button} {...props}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        {...props}
+        style={{ ...styles.button, ...props.style }}
+      >
         {props.children}
       </TouchableOpacity>
     </View>

@@ -5,12 +5,15 @@ import { screenWidth } from '../../constants';
 import { Colors } from '../../constants/Colors';
 import FormButton from '../ui/FormButton';
 import { style } from '../../constants/styles';
+import IconButton from '../ui/IconButton';
+import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const FinalScoreList = ({ data, setState, answer }) => {
   const [score, setScore] = useState('');
   const animation = useRef(null);
   const scale = useRef(new Animated.Value(0)).current;
-
+  const navigation = useNavigation();
   useEffect(() => {
     let count = 0;
     let negative = 0;
@@ -54,7 +57,9 @@ const FinalScoreList = ({ data, setState, answer }) => {
       </View>
       <Animated.View style={[styles.scoreCont, { transform: [{ scale }] }]}>
         <Text style={styles.scoreTitle}>Score</Text>
-        <Text style={styles.score}>{score} Points</Text>
+        <Text style={styles.score}>
+          {score}/{data.questions.length * data.markForOne} Points
+        </Text>
       </Animated.View>
 
       <View style={styles.viewBtn}>
@@ -64,6 +69,14 @@ const FinalScoreList = ({ data, setState, answer }) => {
         >
           <Text style={style.buttonTextWhite}>View Answers</Text>
         </FormButton>
+      </View>
+      <View style={styles.viewBtn}>
+        <IconButton
+          onPress={() => navigation.navigate('home')}
+          style={{ borderRadius: 12, backgroundColor: '#9fa3ed' }}
+        >
+          <AntDesign name='home' size={22} color={'white'} />
+        </IconButton>
       </View>
     </View>
   );
@@ -91,8 +104,8 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
   score: {
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: '500',
   },
   viewBtn: { justifyContent: 'center', flexDirection: 'row' },
   button: { width: 160 },
