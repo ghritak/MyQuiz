@@ -35,12 +35,36 @@ const SignupScreen = () => {
       await updateProfile(user, { displayName: formData.name });
       console.log('User profile updated successfully!');
     } catch (error) {
-      setActivity((prev) => ({
-        ...prev,
-        loading: false,
-      }));
+      handleAuthError(error);
       console.log(error?.message);
     }
+  };
+
+  const handleAuthError = (error) => {
+    let message = '';
+
+    switch (error.code) {
+      case 'auth/invalid-email':
+        message = 'The email address is not valid.';
+        break;
+      case 'auth/missing-password':
+        message = 'Password cannot be blank.';
+        break;
+      case 'auth/weak-password':
+        message = 'Password should be at least 6 characters.';
+        break;
+      case 'auth/email-already-in-use':
+        message = 'User with this email already exists.';
+        break;
+
+      default:
+        message = 'An unknown error occurred. Please try again.';
+    }
+    setActivity((prev) => ({
+      ...prev,
+      errorMessage: message,
+      loading: false,
+    }));
   };
 
   return (
@@ -60,27 +84,36 @@ const SignupScreen = () => {
           placeholder='Email'
           autoCapitalize={false}
           iconLeft={<MaterialCommunityIcons name='email-outline' size={20} />}
-          onChangeText={(text) =>
-            setFormData((prev) => ({ ...prev, email: text }))
-          }
+          onChangeText={(text) => {
+            setFormData((prev) => ({ ...prev, email: text }));
+            setActivity((prev) => ({
+              ...prev,
+              errorMessage: '',
+            }));
+          }}
         />
         <Input
           value={formData.password}
           placeholder='Password'
           autoCapitalize={false}
           secureTextEntry={activity.passwordVisible}
-          onChangeText={(text) =>
-            setFormData((prev) => ({ ...prev, password: text }))
-          }
+          onChangeText={(text) => {
+            setFormData((prev) => ({ ...prev, password: text }));
+            setActivity((prev) => ({
+              ...prev,
+              errorMessage: '',
+            }));
+          }}
           iconLeft={<MaterialCommunityIcons name='lock-outline' size={20} />}
           iconRight={
             <TouchableOpacity
-              onPress={() =>
+              onPress={() => {
                 setActivity((prev) => ({
                   ...prev,
                   passwordVisible: !activity.passwordVisible,
-                }))
-              }
+                  errorMessage: '',
+                }));
+              }}
             >
               <MaterialCommunityIcons
                 name={activity.passwordVisible ? 'eye' : 'eye-off'}
@@ -89,7 +122,10 @@ const SignupScreen = () => {
             </TouchableOpacity>
           }
         />
-        <FormButton onPress={handleSignup}>
+        {activity.errorMessage && (
+          <Text style={{ color: 'red' }}>{activity.errorMessage}</Text>
+        )}
+        <FormButton loading={activity.loading} onPress={handleSignup}>
           <Text style={styles.buttonText}>Sign up</Text>
         </FormButton>
         <View style={styles.signupCont}>

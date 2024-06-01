@@ -16,6 +16,8 @@ const LoginScreen = () => {
   });
 
   const [activity, setActivity] = useState({
+    loading: false,
+    errorMessage: '',
     passwordVisible: false,
   });
 
@@ -25,20 +27,51 @@ const LoginScreen = () => {
       loading: true,
     }));
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      const { user } = userCredential;
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
       console.log('User logged in successfully!');
     } catch (error) {
-      setActivity((prev) => ({
-        ...prev,
-        loading: false,
-      }));
+      handleAuthError(error);
       console.log(error?.message);
     }
+  };
+
+  const handleAuthError = (error) => {
+    let message = '';
+
+    switch (error.code) {
+      case 'auth/invalid-email':
+        message = 'The email address is not valid.';
+        break;
+      case 'auth/invalid-credential':
+        message = 'Invalid Credentials';
+        break;
+      case 'auth/missing-password':
+        message = 'Password cannot be blank.';
+        break;
+      case 'auth/user-disabled':
+        message =
+          'The user corresponding to the given email has been disabled.';
+        break;
+      case 'auth/user-not-found':
+        message = 'There is no user corresponding to the given email.';
+        break;
+      case 'auth/wrong-password':
+        message =
+          'The password is invalid or the user does not have a password.';
+        break;
+      case 'auth/too-many-requests':
+        message =
+          'Access to this account has been temporarily disabled due to many failed login attempts.';
+        break;
+
+      default:
+        message = 'An unknown error occurred. Please try again.';
+    }
+    setActivity((prev) => ({
+      ...prev,
+      errorMessage: message,
+      loading: false,
+    }));
   };
 
   return (
@@ -50,18 +83,26 @@ const LoginScreen = () => {
           placeholder='Email'
           autoCapitalize={false}
           iconLeft={<MaterialCommunityIcons name='email-outline' size={20} />}
-          onChangeText={(text) =>
-            setFormData((prev) => ({ ...prev, email: text }))
-          }
+          onChangeText={(text) => {
+            setFormData((prev) => ({ ...prev, email: text }));
+            setActivity((prev) => ({
+              ...prev,
+              errorMessage: '',
+            }));
+          }}
         />
         <Input
           value={formData.password}
           placeholder='Password'
           autoCapitalize={false}
           secureTextEntry={activity.passwordVisible}
-          onChangeText={(text) =>
-            setFormData((prev) => ({ ...prev, password: text }))
-          }
+          onChangeText={(text) => {
+            setFormData((prev) => ({ ...prev, password: text }));
+            setActivity((prev) => ({
+              ...prev,
+              errorMessage: '',
+            }));
+          }}
           iconLeft={<MaterialCommunityIcons name='lock-outline' size={20} />}
           iconRight={
             <TouchableOpacity
@@ -79,7 +120,10 @@ const LoginScreen = () => {
             </TouchableOpacity>
           }
         />
-        <FormButton onPress={handleLogin}>
+        {activity.errorMessage && (
+          <Text style={{ color: 'red' }}>{activity.errorMessage}</Text>
+        )}
+        <FormButton loading={activity.loading} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </FormButton>
         <View style={styles.signupCont}>

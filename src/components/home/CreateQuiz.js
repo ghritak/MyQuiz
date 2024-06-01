@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -18,6 +19,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../../../firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
 import AboutQuiz from '../quiz/AboutQuiz';
+import { style } from '../../constants/styles';
 
 const questionObject = {
   question: '',
@@ -43,6 +45,11 @@ const CreateQuizScreen = () => {
   const [questions, setQuestions] = useState([questionObject]);
 
   const handleCreate = async () => {
+    const [isValid, message] = validateQuiz();
+    if (!isValid) {
+      Alert.alert(message);
+      return;
+    }
     setLoading(true);
     try {
       const submitData = {
@@ -65,6 +72,28 @@ const CreateQuizScreen = () => {
     const newQuestions = questions;
     newQuestions[index] = item;
     setQuestions(newQuestions);
+  };
+
+  const validateQuiz = () => {
+    if (
+      !formData.name ||
+      !formData.description ||
+      !formData.markForOne ||
+      !formData.isNegative ||
+      !formData.timeLimit
+    ) {
+      return [false, 'Please fill all the details.'];
+    }
+    if (
+      !questions[0].question ||
+      !questions[0].optionA ||
+      !questions[0].optionB ||
+      !questions[0].optionC ||
+      !questions[0].optionD ||
+      !questions[0].answer
+    )
+      return [false, 'Please fill atleast one whole question.'];
+    return [true];
   };
 
   return (
@@ -104,10 +133,8 @@ const CreateQuizScreen = () => {
                 >
                   <Text style={styles.addQuestion}>Add Question</Text>
                 </TouchableOpacity>
-                <FormButton onPress={handleCreate}>
-                  <Text style={{ color: '#fff', fontWeight: '500' }}>
-                    Create
-                  </Text>
+                <FormButton loading={isLoading} onPress={handleCreate}>
+                  <Text style={style.buttonTextWhite}>Create</Text>
                 </FormButton>
               </>
             );
