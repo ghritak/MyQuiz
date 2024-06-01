@@ -16,7 +16,6 @@ const FinalAnswerCard = ({ item, index, answer }) => {
         <FlatList
           data={data}
           renderItem={({ item: each, index: id }) => {
-            console.log(getOptionIndex(id), each);
             return (
               <View
                 style={[
@@ -73,6 +72,7 @@ const FinalAnswerCard = ({ item, index, answer }) => {
             );
           }}
         />
+        <Text>{answer[index]}</Text>
       </View>
     </View>
   );

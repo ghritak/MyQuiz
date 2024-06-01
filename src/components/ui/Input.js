@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
   inputContainer: {
     backgroundColor: Colors.secondary,
     marginVertical: 10,
-    paddingVertical: 12,
+
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 30,
   },
   iconLeft: { marginRight: 10 },
-  input: { flex: 1 },
+  input: { flex: 1, paddingVertical: 12 },
   iconRight: { marginLeft: 10 },
 });
 

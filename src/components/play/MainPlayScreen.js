@@ -8,6 +8,7 @@ import Introcomponent from './IntroComponent';
 import { useState } from 'react';
 import QuestionComponent from './QuestionComponent';
 import FinalAnswerList from './FinalAnswerList';
+import FinalScoreList from './FinalScoreList';
 
 const MainPlayScreen = ({ route }) => {
   const { data } = route.params;
@@ -20,6 +21,12 @@ const MainPlayScreen = ({ route }) => {
       console.log(answer);
     } else {
       setState((prev) => prev + 1);
+    }
+    if (answer.length <= state) {
+      setAnswer((prev) => [...prev, 'not attempted']);
+    }
+    if (state === 'quiz finished' && answer.length !== data.questions.length) {
+      setAnswer((prev) => [...prev, 'not attempted']);
     }
   };
 
@@ -35,7 +42,9 @@ const MainPlayScreen = ({ route }) => {
           <QuestionComponent
             question={data?.questions[state]}
             state={state}
+            handlePageIncrement={handlePageIncrement}
             setAnswer={setAnswer}
+            totalSeconds={data.timeLimit}
           />
           <View style={styles.floatButton}>
             <FormButton onPress={handlePageIncrement}>
@@ -48,7 +57,7 @@ const MainPlayScreen = ({ route }) => {
       )}
 
       {state === 'quiz finished' && (
-        <FinalAnswerList data={data} setState={setState} answer={answer} />
+        <FinalScoreList data={data} setState={setState} answer={answer} />
       )}
     </>
   );

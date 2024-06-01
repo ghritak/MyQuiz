@@ -1,13 +1,21 @@
 import { StyleSheet, Text, View } from 'react-native';
 import QuestionRadioButton from '../ui/QuestionRadioButton';
+import TimerComponent from './TimerComponent';
 
-const QuestionComponent = ({ question, state, setAnswer }) => {
+const QuestionComponent = ({
+  totalSeconds,
+  question,
+  state,
+  handlePageIncrement,
+  setAnswer,
+}) => {
   const data = [
     question.optionA,
     question.optionB,
     question.optionC,
     question.optionD,
   ];
+
   return (
     <View style={styles.container}>
       <Text style={styles.question}>
@@ -16,7 +24,16 @@ const QuestionComponent = ({ question, state, setAnswer }) => {
       <View style={styles.options}>
         <QuestionRadioButton
           data={data}
-          onSelect={(value) => setAnswer((prev) => [...prev, value])}
+          onSelect={(value) => {
+            setAnswer((prev) => [...prev, value]);
+          }}
+        />
+      </View>
+      <View>
+        <TimerComponent
+          key={state}
+          totalSeconds={totalSeconds}
+          onTimerEnd={handlePageIncrement}
         />
       </View>
     </View>

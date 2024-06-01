@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import RadioButton from '../../ui/RadioButton';
-import { Colors } from '../../../constants/Colors';
+import RadioButton from '../ui/RadioButton';
+import { Colors } from '../../constants/Colors';
 
 const data = ['Yes', 'No'];
 

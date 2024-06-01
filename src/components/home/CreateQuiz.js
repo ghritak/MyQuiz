@@ -14,10 +14,10 @@ import Header from '../ui/Header';
 import RadioButton from '../ui/RadioButton';
 import FormButton from '../ui/FormButton';
 import QuizQuestionForm from '../ui/QuizQuestionForm';
-import AboutQuiz from './quiz/AboutQuiz';
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../../../firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
+import AboutQuiz from '../quiz/AboutQuiz';
 
 const questionObject = {
   question: '',

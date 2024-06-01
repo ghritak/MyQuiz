@@ -8,11 +8,11 @@ import {
   View,
 } from 'react-native';
 import { db } from '../../../firebaseConfig';
-import QuizPlayCard from './quiz/QuizPlayCard';
 import { useEffect, useState } from 'react';
 import UpperBar from '../ui/UpperBar';
 import Header from '../ui/Header';
 import { MaterialIcons } from '@expo/vector-icons';
+import QuizPlayCard from '../quiz/QuizPlayCard';
 
 const PlayQuiz = () => {
   const [quizzes, setQuizzes] = useState([]);

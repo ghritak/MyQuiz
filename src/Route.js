@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import AuthStack from './components/stacks/AuthStack';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import { ActivityIndicator, View } from 'react-native';
 import HomeStack from './components/stacks/HomeStack';
-
-const Stack = createStackNavigator();
 
 const Route = () => {
   const [loading, setLoading] = useState(true);
@@ -19,7 +16,6 @@ const Route = () => {
       } else {
         setAuthenticated(false);
       }
-
       setLoading(false);
     });
   }, []);
